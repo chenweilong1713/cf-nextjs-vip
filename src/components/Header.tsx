@@ -9,7 +9,7 @@ export default function Header() {
   const [showNotifications, setShowNotifications] = useState(false);
 
   return (
-    <header className="h-20 flex items-center justify-between px-6 border-b border-slate-200 bg-white sticky top-0 z-10 relative">
+    <header className="h-15 flex items-center justify-between px-6 border-b border-slate-200 bg-white sticky top-0 z-10 relative">
       <div>
         <h1 className="text-2xl font-bold text-slate-800">早上好, 设计师 👋</h1>
       </div>
