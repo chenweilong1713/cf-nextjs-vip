@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { 
   Layers, 
   LayoutDashboard, 
@@ -9,11 +9,13 @@ import {
   Calendar, 
   GitGraph, 
   Palette, 
-  MoreHorizontal 
+  MoreHorizontal,
+  LogOut
 } from 'lucide-react';
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
 
   const menuItems = [
     { id: 'dashboard', label: '工作台首页', icon: LayoutDashboard, category: 'main', path: '/' },
@@ -27,6 +29,11 @@ export default function Sidebar() {
   const isActive = (path: string) => {
     if (path === '/' && pathname !== '/') return false;
     return pathname === path;
+  };
+
+  const handleLogout = () => {
+    // In a real app, you would clear auth tokens here
+    router.push('/login');
   };
 
   return (
@@ -93,14 +100,22 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      <div className="p-6">
-        <div className="p-4 bg-indigo-50 rounded-2xl">
+      <div className="p-4 border-t border-slate-100">
+        <div className="p-4 bg-indigo-50 rounded-2xl mb-4">
           <p className="text-xs text-indigo-600 font-semibold mb-1">存储空间</p>
           <div className="w-full bg-indigo-200 h-1 rounded-full overflow-hidden">
             <div className="bg-indigo-600 h-full w-[65%]"></div>
           </div>
           <p className="text-[10px] text-indigo-400 mt-2">已使用 12.4 GB / 20 GB</p>
         </div>
+        
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center gap-3 px-4 py-3 text-slate-600 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all duration-200"
+        >
+          <LogOut className="w-5 h-5" />
+          <span className="font-medium">退出登录</span>
+        </button>
       </div>
     </aside>
   );
