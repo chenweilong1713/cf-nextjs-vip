@@ -4,7 +4,7 @@ import { MoreHorizontal, ArrowUpRight } from 'lucide-react';
 
 export default function Dashboard() {
   return (
-    <div className="p-8 space-y-8 max-w-[1200px] mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="p-6 space-y-6 w-full max-w-[1400px] animate-in fade-in slide-in-from-bottom-4 duration-500">
       
       {/* Top Section: Chart + Promo */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

@@ -4,9 +4,9 @@ import { Search, Bell } from 'lucide-react';
 
 export default function Header() {
   return (
-    <header className="h-20 flex items-center justify-between px-8 border-b border-slate-100 bg-white/50 backdrop-blur-sm sticky top-0 z-10">
+    <header className="h-20 flex items-center justify-between px-6 border-b border-slate-200 bg-white sticky top-0 z-10">
       <div>
-        <h1 className="text-2xl font-bold text-slate-800">你好，实习两年半 👋</h1>
+        <h1 className="text-2xl font-bold text-slate-800">早上好, 设计师 👋</h1>
       </div>
       
       <div className="flex items-center gap-6">

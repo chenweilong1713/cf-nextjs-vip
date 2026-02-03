@@ -30,7 +30,7 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="w-64 flex-shrink-0 border-r border-slate-100 flex flex-col bg-slate-50/50 h-screen sticky top-0">
+    <aside className="w-64 flex-shrink-0 border-r border-slate-200 flex flex-col bg-white h-screen sticky top-0 z-20">
       <div className="p-8">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-200">
