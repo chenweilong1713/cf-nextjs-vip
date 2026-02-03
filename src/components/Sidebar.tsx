@@ -18,7 +18,7 @@ export default function Sidebar() {
   const router = useRouter();
 
   const menuItems = [
-    { id: 'dashboard', label: '工作台首页', icon: LayoutDashboard, category: 'main', path: '/' },
+    { id: 'dashboard', label: '工作台', icon: LayoutDashboard, category: 'main', path: '/' },
     { id: 'docs', label: '文档编写', icon: FileText, category: 'create', path: '/docs' },
     { id: 'plans', label: '计划管理', icon: Calendar, category: 'create', path: '/plans' },
     { id: 'mindmap', label: '思维导图', icon: GitGraph, category: 'create', path: '/mindmap' },
