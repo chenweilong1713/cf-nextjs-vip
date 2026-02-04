@@ -1,6 +1,7 @@
 'use client';
 
 import { MoreHorizontal, ArrowUpRight } from 'lucide-react';
+import MemoWidget from './MemoWidget';
 
 export default function Dashboard() {
   return (
@@ -48,33 +49,9 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Promo Card */}
-        <div className="lg:col-span-1 bg-indigo-600 rounded-3xl p-6 text-white relative overflow-hidden shadow-lg shadow-indigo-200">
-           {/* Decor */}
-           <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-10 -mt-10"></div>
-           <div className="absolute bottom-0 left-0 w-24 h-24 bg-rose-500/20 rounded-full blur-xl -ml-5 -mb-5"></div>
-           
-           <div className="relative z-10 h-full flex flex-col justify-between">
-              <div>
-                  <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-4 backdrop-blur-sm">
-                    <ArrowUpRight className="w-5 h-5 text-white" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-2">升级到 Pro</h3>
-                  <p className="text-indigo-100 text-sm leading-relaxed opacity-90">
-                    解锁 AI 写作助手、无限存储空间和高级数据分析功能。
-                  </p>
-              </div>
-              
-              <div className="mt-6">
-                 <div className="flex items-end gap-1 mb-2">
-                    <span className="text-3xl font-bold">¥12</span>
-                    <span className="text-sm opacity-80 mb-1">/ 月</span>
-                 </div>
-                 <button className="w-full py-3 bg-white text-indigo-600 rounded-xl font-semibold text-sm hover:bg-indigo-50 transition-colors cursor-pointer">
-                    立即升级
-                 </button>
-              </div>
-           </div>
+        {/* Memo Widget */}
+        <div className="lg:col-span-1 h-full min-h-[320px]">
+           <MemoWidget />
         </div>
 
       </div>
