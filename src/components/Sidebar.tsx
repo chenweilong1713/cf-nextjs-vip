@@ -26,9 +26,9 @@ export default function Sidebar() {
   const menuItems = [
     { id: 'dashboard', label: '工作台', icon: LayoutDashboard, category: 'main', path: '/' },
     { id: 'ai', label: 'AI 对话', icon: Bot, category: 'main', path: '/ai' },
+    { id: 'memos', label: '备忘录', icon: StickyNote, category: 'create', path: '/memos' },
     { id: 'docs', label: '文档编写', icon: FileText, category: 'create', path: '/docs' },
     // { id: 'snippets', label: '代码片段', icon: Code, category: 'create', path: '/snippets' },
-    { id: 'memos', label: '备忘录', icon: StickyNote, category: 'create', path: '/memos' },
     { id: 'plans', label: '计划管理', icon: Calendar, category: 'create', path: '/plans' },
     { id: 'mindmap', label: '思维导图', icon: GitGraph, category: 'create', path: '/mindmap' },
     { id: 'inspiration', label: '灵感画板', icon: Palette, category: 'create', path: '/inspiration' },
