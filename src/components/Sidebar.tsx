@@ -156,13 +156,13 @@ export default function Sidebar() {
            </div>
         </div>
         
-        <button
+        {/* <button
           onClick={handleLogout}
           className="w-full flex items-center gap-3 px-4 py-3 text-slate-600 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all duration-200"
         >
           <LogOut className="w-5 h-5" />
           <span className="font-medium">退出登录</span>
-        </button>
+        </button> */}
       </div>
     </aside>
   );

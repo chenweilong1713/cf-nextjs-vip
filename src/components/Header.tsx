@@ -4,9 +4,11 @@ import { useState } from 'react';
 import { Search, Bell } from 'lucide-react';
 import Link from 'next/link';
 import NotificationDropdown from './NotificationDropdown';
+import UserDropdown from './UserDropdown';
 
 export default function Header() {
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   return (
     <header className="h-17 flex items-center justify-between px-6 border-b border-slate-200 bg-white sticky top-0 z-10 relative">
@@ -38,11 +40,18 @@ export default function Header() {
             )}
         </div>
         
-        <Link href="/profile">
-          <div className="w-9 h-9 rounded-full bg-indigo-100 border border-indigo-200 flex items-center justify-center overflow-hidden cursor-pointer hover:ring-2 hover:ring-indigo-500/20 transition-all">
+        <div className="relative">
+          <button 
+            onClick={() => setShowUserMenu(!showUserMenu)}
+            className={`w-9 h-9 rounded-full bg-indigo-100 border border-indigo-200 flex items-center justify-center overflow-hidden cursor-pointer hover:ring-2 hover:ring-indigo-500/20 transition-all ${showUserMenu ? 'ring-2 ring-indigo-500/20' : ''}`}
+          >
                <img src="https://api.dicebear.com/9.x/avataaars/svg?seed=Felix" alt="User" className="w-full h-full object-cover" />
-          </div>
-        </Link>
+          </button>
+          
+          {showUserMenu && (
+            <UserDropdown onClose={() => setShowUserMenu(false)} />
+          )}
+        </div>
       </div>
     </header>
   );
