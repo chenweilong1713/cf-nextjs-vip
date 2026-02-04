@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Lock, Mail, ArrowRight } from 'lucide-react';
 
+import Link from 'next/link';
+
 export default function LoginPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -82,7 +84,7 @@ export default function LoginPage() {
 
         <div className="mt-8 text-center text-sm text-slate-500">
           还没有账号？ 
-          <a href="#" className="text-indigo-600 hover:text-indigo-700 font-medium ml-1">立即注册</a>
+          <Link href="/register" className="text-indigo-600 hover:text-indigo-700 font-medium ml-1">立即注册</Link>
         </div>
       </div>
     </div>
