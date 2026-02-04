@@ -10,7 +10,10 @@ import {
   GitGraph, 
   Palette, 
   MoreHorizontal,
-  LogOut
+  LogOut,
+  Shield,
+  Zap,
+  Crown
 } from 'lucide-react';
 
 export default function Sidebar() {
@@ -35,6 +38,40 @@ export default function Sidebar() {
     // In a real app, you would clear auth tokens here
     router.push('/login');
   };
+
+  const currentLevel: 'ordinary' | 'pro' | 'max' = 'max';
+  
+  const levelConfig = {
+    ordinary: { 
+      label: '普通会员', 
+      icon: Shield, 
+      desc: '基础功能',
+      color: 'text-slate-600', 
+      bg: 'bg-slate-100',
+      border: 'border-slate-200',
+      gradient: 'from-slate-50 to-slate-100'
+    },
+    pro: { 
+      label: 'Pro 会员', 
+      icon: Zap, 
+      desc: '专业功能',
+      color: 'text-indigo-600', 
+      bg: 'bg-indigo-50',
+      border: 'border-indigo-100',
+      gradient: 'from-indigo-50 to-white'
+    },
+    max: { 
+      label: 'Max 会员', 
+      icon: Crown, 
+      desc: '尊享权益',
+      color: 'text-amber-600', 
+      bg: 'bg-amber-50',
+      border: 'border-amber-100',
+      gradient: 'from-amber-50 to-white'
+    }
+  };
+  
+  const level = levelConfig[currentLevel];
 
   return (
     <aside className="w-64 flex-shrink-0 border-r border-slate-200 flex flex-col bg-white h-screen sticky top-0 z-20">
@@ -101,12 +138,22 @@ export default function Sidebar() {
       </nav>
 
       <div className="p-4 border-t border-slate-100">
-        <div className="p-4 bg-indigo-50 rounded-2xl mb-4">
-          <p className="text-xs text-indigo-600 font-semibold mb-1">存储空间</p>
-          <div className="w-full bg-indigo-200 h-1 rounded-full overflow-hidden">
-            <div className="bg-indigo-600 h-full w-[65%]"></div>
-          </div>
-          <p className="text-[10px] text-indigo-400 mt-2">已使用 12.4 GB / 20 GB</p>
+        <div className={`p-4 rounded-2xl mb-4 border ${level.border} bg-gradient-to-br ${level.gradient}`}>
+           <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-semibold text-slate-500">当前等级</span>
+              <span className={`px-2 py-0.5 rounded-full ${level.bg} text-[10px] font-bold ${level.color} uppercase tracking-wider`}>
+                {currentLevel}
+              </span>
+           </div>
+           <div className="flex items-center gap-3">
+              <div className={`p-2 bg-white/80 rounded-lg shadow-sm ${level.color}`}>
+                 <level.icon className="w-5 h-5" />
+              </div>
+              <div>
+                 <p className="font-bold text-slate-800 text-sm">{level.label}</p>
+                 <p className="text-[10px] text-slate-500">{level.desc}</p>
+              </div>
+           </div>
         </div>
         
         <button
