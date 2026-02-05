@@ -1,6 +1,7 @@
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { success, error, jsonResponse } from '@/lib/utils/response';
 import { hashPassword } from '@/lib/utils/password';
+import { signJWT } from '@/lib/utils/jwt';
 
 export async function POST(request: Request) {
     try {
@@ -29,11 +30,16 @@ export async function POST(request: Request) {
             return jsonResponse(error(401, 'Invalid email or password'), 401);
         }
         
-        // Return success
         // Remove sensitive info
         const { password_hash, ...userInfo } = user;
         
-        return jsonResponse(success(userInfo, 'Login successful'));
+        // Generate JWT
+        const token = await signJWT({ id: user.id, email: user.email, nickname: user.nickname });
+        
+        return jsonResponse(success({
+            user: userInfo,
+            token
+        }, 'Login successful'));
 
     } catch (e: any) {
         console.error('Login error:', e);

@@ -6,18 +6,44 @@ import { Lock, Mail, ArrowRight } from 'lucide-react';
 
 import Link from 'next/link';
 
+import api from '@/lib/axios';
+
 export default function LoginPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setErrorMsg('');
     
-    // Simulate network delay
-    setTimeout(() => {
-      router.push('/');
-    }, 1000);
+    const formData = new FormData(e.target as HTMLFormElement);
+    const email = formData.get('email');
+    const password = formData.get('password');
+
+    try {
+      const response = await api.post('/auth/login', {
+        email,
+        password
+      });
+
+      if (response.data.code === 200) {
+        // Store token and user info
+        const { token, user } = response.data.data;
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(user));
+        
+        router.push('/');
+      } else {
+        setErrorMsg(response.data.message || 'Login failed');
+      }
+    } catch (err: any) {
+        console.error(err);
+        setErrorMsg(err.response?.data?.message || 'Login failed. Please check your credentials.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -31,16 +57,24 @@ export default function LoginPage() {
           <p className="text-slate-500 mt-2">登录您的 Nebula Workspace 账号</p>
         </div>
 
+        {errorMsg && (
+          <div className="mb-4 p-3 bg-red-50 text-red-600 text-sm rounded-lg border border-red-100">
+            {errorMsg}
+          </div>
+        )}
+
         <form onSubmit={handleLogin} className="space-y-6">
           <div className="space-y-2">
             <label className="text-sm font-medium text-slate-700">邮箱地址</label>
             <div className="relative">
               <Mail className="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input 
+                name="email"
                 type="email" 
-                defaultValue="demo@nebula.com"
+                defaultValue="newtest@example.com"
                 className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-800"
                 placeholder="请输入您的邮箱"
+                required
               />
             </div>
           </div>
@@ -50,10 +84,12 @@ export default function LoginPage() {
             <div className="relative">
               <Lock className="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input 
+                name="password"
                 type="password" 
-                defaultValue="password"
+                defaultValue="password123"
                 className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-800"
                 placeholder="请输入您的密码"
+                required
               />
             </div>
           </div>

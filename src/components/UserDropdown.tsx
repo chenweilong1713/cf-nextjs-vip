@@ -13,6 +13,8 @@ export default function UserDropdown({ onClose }: UserDropdownProps) {
 
   const handleLogout = () => {
     // Perform logout logic here (e.g., clear tokens)
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     router.push('/login');
   };
 

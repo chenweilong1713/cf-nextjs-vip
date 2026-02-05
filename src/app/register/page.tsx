@@ -5,39 +5,45 @@ import { useRouter } from 'next/navigation';
 import { Lock, Mail, ArrowRight, User, ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
 
+import api from '@/lib/axios';
+
 export default function RegisterPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [countdown, setCountdown] = useState(0);
-  const [email, setEmail] = useState('');
-
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (countdown > 0) {
-      timer = setInterval(() => {
-        setCountdown((prev) => prev - 1);
-      }, 1000);
-    }
-    return () => clearInterval(timer);
-  }, [countdown]);
-
-  const handleSendCode = () => {
-    if (!email) {
-      alert('请先输入邮箱地址');
-      return;
-    }
-    // Simulate sending code
-    setCountdown(60);
-  };
-
-  const handleRegister = (e: React.FormEvent) => {
+  const [errorMsg, setErrorMsg] = useState('');
+  
+  // Removed countdown logic as backend doesn't support verification code yet
+  
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setErrorMsg('');
     
-    // Simulate registration
-    setTimeout(() => {
-      router.push('/login');
-    }, 1000);
+    const formData = new FormData(e.target as HTMLFormElement);
+    const nickname = formData.get('nickname');
+    const email = formData.get('email');
+    const password = formData.get('password');
+    // const code = formData.get('code'); // Not implemented in backend
+
+    try {
+      const response = await api.post('/auth/register', {
+        nickname,
+        email,
+        password
+      });
+
+      if (response.data.code === 200) {
+        // Auto login or redirect to login? Let's redirect to login
+        router.push('/login');
+      } else {
+        setErrorMsg(response.data.message || 'Registration failed');
+      }
+    } catch (err: any) {
+        console.error(err);
+        setErrorMsg(err.response?.data?.message || 'Registration failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -51,15 +57,22 @@ export default function RegisterPage() {
           <p className="text-slate-500 mt-2">加入 Nebula Workspace，开启高效工作</p>
         </div>
 
+        {errorMsg && (
+          <div className="mb-4 p-3 bg-red-50 text-red-600 text-sm rounded-lg border border-red-100">
+            {errorMsg}
+          </div>
+        )}
+
         <form onSubmit={handleRegister} className="space-y-6">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-700">用户名</label>
+            <label className="text-sm font-medium text-slate-700">昵称</label>
             <div className="relative">
               <User className="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input 
+                name="nickname"
                 type="text" 
                 className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-800"
-                placeholder="请输入您的用户名"
+                placeholder="请输入您的昵称"
                 required
               />
             </div>
@@ -70,9 +83,8 @@ export default function RegisterPage() {
             <div className="relative">
               <Mail className="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input 
+                name="email"
                 type="email" 
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-800"
                 placeholder="请输入您的邮箱"
                 required
@@ -81,51 +93,28 @@ export default function RegisterPage() {
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-700">验证码</label>
-            <div className="flex gap-3">
-              <div className="relative flex-1">
-                <ShieldCheck className="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                <input 
-                  type="text" 
-                  className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-800"
-                  placeholder="请输入验证码"
-                  required
-                />
-              </div>
-              <button
-                type="button"
-                onClick={handleSendCode}
-                disabled={countdown > 0}
-                className="px-4 py-3 bg-indigo-50 text-indigo-600 font-medium rounded-xl hover:bg-indigo-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-w-[120px]"
-              >
-                {countdown > 0 ? `${countdown}s 后重发` : '获取验证码'}
-              </button>
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-700">设置密码</label>
-            <div className="relative">
+            <label className="text-sm font-medium text-slate-700">密码</label>
+             <div className="relative">
               <Lock className="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input 
+                name="password"
                 type="password" 
                 className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-800"
-                placeholder="请设置您的密码"
+                placeholder="请输入您的密码"
                 required
               />
             </div>
           </div>
-
           <button 
             type="submit" 
             disabled={isLoading}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 rounded-xl transition-all shadow-lg shadow-indigo-200 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed mt-2"
+            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 rounded-xl transition-all shadow-lg shadow-indigo-200 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
           >
             {isLoading ? (
               <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
             ) : (
               <>
-                立即注册
+                注册账号
                 <ArrowRight className="w-4 h-4" />
               </>
             )}
@@ -134,7 +123,7 @@ export default function RegisterPage() {
 
         <div className="mt-8 text-center text-sm text-slate-500">
           已有账号？ 
-          <Link href="/login" className="text-indigo-600 hover:text-indigo-700 font-medium ml-1">直接登录</Link>
+          <Link href="/login" className="text-indigo-600 hover:text-indigo-700 font-medium ml-1">立即登录</Link>
         </div>
       </div>
     </div>
