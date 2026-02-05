@@ -68,39 +68,39 @@ export default function MemoWidget() {
   };
 
   return (
-    <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm h-full flex flex-col">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-bold text-slate-800">快速备忘</h3>
-        <Link href="/memos" className="text-xs text-indigo-600 font-medium hover:underline flex items-center gap-1">
-          全部记录 <ArrowRight size={12} />
+    <div className="bg-white rounded-3xl p-4 border border-slate-100 shadow-sm h-full flex flex-col">
+      <div className="flex justify-between items-center mb-3">
+        <h3 className="text-base font-bold text-slate-800">快速备忘</h3>
+        <Link href="/memos" className="text-[10px] text-indigo-600 font-medium hover:underline flex items-center gap-1">
+          全部记录 <ArrowRight size={10} />
         </Link>
       </div>
 
       {/* Input */}
-      <div className="relative mb-6">
+      <div className="relative mb-4">
         <textarea
           placeholder="记下你的想法... (Cmd+Enter 保存)"
           value={newMemoContent}
           onChange={e => setNewMemoContent(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="w-full h-24 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-sm resize-none"
+          className="w-full h-20 px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-xs resize-none"
         />
         <button
           onClick={handleSave}
           disabled={!newMemoContent.trim()}
-          className="absolute bottom-3 right-3 p-1.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
+          className="absolute bottom-2 right-2 p-1 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
           title="保存"
         >
-          <Plus size={16} />
+          <Plus size={14} />
         </button>
       </div>
 
       {/* Recent List */}
-      <div className="flex-1 overflow-y-auto space-y-3 min-h-[100px]">
+      <div className="flex-1 overflow-y-auto space-y-2 min-h-[100px]">
         {memos.length > 0 ? (
           memos.slice(0, 3).map(memo => (
-            <div key={memo.id} className="p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors cursor-pointer group" onClick={() => router.push('/memos')}>
-              <p className="text-sm text-slate-700 line-clamp-2 mb-2 font-medium">
+            <div key={memo.id} className="p-2 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors cursor-pointer group" onClick={() => router.push('/memos')}>
+              <p className="text-xs text-slate-700 line-clamp-2 mb-1.5 font-medium">
                 {memo.content}
               </p>
               <div className="flex items-center justify-between text-[10px] text-slate-400">

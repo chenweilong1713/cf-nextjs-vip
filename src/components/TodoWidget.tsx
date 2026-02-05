@@ -80,54 +80,54 @@ export default function TodoWidget() {
     .slice(0, 4);
 
   return (
-    <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm h-full flex flex-col">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-bold text-slate-800">今日待办</h3>
-        <Link href="/plans" className="text-xs text-indigo-600 font-medium hover:underline flex items-center gap-1">
-          管理计划 <ArrowRight size={12} />
+    <div className="bg-white rounded-3xl p-4 border border-slate-100 shadow-sm h-full flex flex-col">
+      <div className="flex justify-between items-center mb-3">
+        <h3 className="text-base font-bold text-slate-800">今日待办</h3>
+        <Link href="/plans" className="text-[10px] text-indigo-600 font-medium hover:underline flex items-center gap-1">
+          管理计划 <ArrowRight size={10} />
         </Link>
       </div>
 
       {/* Quick Add */}
-      <div className="relative mb-4">
+      <div className="relative mb-3">
         <input
           type="text"
           placeholder="添加新任务... (Enter)"
           value={newTodoTitle}
           onChange={e => setNewTodoTitle(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="w-full pl-4 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-sm"
+          className="w-full pl-3 pr-8 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-xs"
         />
         <button
           onClick={handleAddTodo}
           disabled={!newTodoTitle.trim()}
           className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-indigo-600 hover:bg-indigo-50 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
-          <Plus size={18} />
+          <Plus size={14} />
         </button>
       </div>
 
       {/* Todo List */}
-      <div className="flex-1 overflow-y-auto space-y-2 min-h-[100px]">
+      <div className="flex-1 overflow-y-auto space-y-1.5 min-h-[100px]">
         {pendingTodos.length > 0 ? (
           pendingTodos.map(todo => {
              const isOverdue = todo.deadline < new Date().toISOString().split('T')[0];
              
              return (
-              <div key={todo.id} className="flex items-start gap-3 p-2 hover:bg-slate-50 rounded-lg transition-colors group">
+              <div key={todo.id} className="flex items-start gap-2 p-1.5 hover:bg-slate-50 rounded-lg transition-colors group">
                 <button 
                   onClick={(e) => toggleStatus(todo.id, e)}
                   className="mt-0.5 text-slate-300 hover:text-indigo-500 transition-colors shrink-0"
                 >
-                  <Circle size={18} />
+                  <Circle size={14} />
                 </button>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm text-slate-700 font-medium truncate">{todo.title}</p>
-                  <div className="flex items-center gap-2 mt-0.5">
-                    <span className={`text-[10px] ${isOverdue ? 'text-red-500 font-bold' : 'text-slate-400'}`}>
+                  <p className="text-xs text-slate-700 font-medium truncate">{todo.title}</p>
+                  <div className="flex items-center gap-1.5 mt-0.5">
+                    <span className={`text-[9px] ${isOverdue ? 'text-red-500 font-bold' : 'text-slate-400'}`}>
                       {isOverdue ? '已逾期' : todo.deadline === new Date().toISOString().split('T')[0] ? '今天截止' : todo.deadline}
                     </span>
-                    <span className="text-[10px] text-slate-400 bg-slate-100 px-1.5 rounded">
+                    <span className="text-[9px] text-slate-400 bg-slate-100 px-1 rounded">
                       {todo.category === 'work' ? '工作' : todo.category === 'personal' ? '个人' : todo.category === 'study' ? '学习' : '紧急'}
                     </span>
                   </div>
@@ -136,8 +136,8 @@ export default function TodoWidget() {
             );
           })
         ) : (
-          <div className="h-full flex flex-col items-center justify-center text-slate-400 text-sm py-4">
-             <Calendar size={24} className="mb-2 opacity-50" />
+          <div className="h-full flex flex-col items-center justify-center text-slate-400 text-xs py-4">
+             <Calendar size={20} className="mb-2 opacity-50" />
              <p>暂无待办事项</p>
           </div>
         )}
