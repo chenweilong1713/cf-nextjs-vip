@@ -80,7 +80,7 @@ npm run cf-typegen
 # 本地应用迁移 (需确保已登录 wrangler)
 npx wrangler d1 migrations apply DB --local
 
-# 导入示例数据 (可选)
+# 导入示例数据 (可选，默认密码admin/admin123)
 npx wrangler d1 execute DB --local --file=./cf-nextjs-vip.sql
 ```
 
