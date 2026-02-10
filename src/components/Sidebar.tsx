@@ -5,22 +5,14 @@ import { usePathname, useRouter } from 'next/navigation';
 import { 
   Layers, 
   LayoutDashboard, 
-  FileText, 
-  Calendar, 
-  GitGraph, 
-  Palette, 
   MoreHorizontal,
-  LogOut,
-  Shield,
-  Zap,
-  Crown,
-  Bot,
-  StickyNote,
-  Code,
   Users,
   History,
   BarChart3,
-  TrendingUp
+  TrendingUp,
+  Shield,
+  Zap,
+  Crown
 } from 'lucide-react';
 
 export default function Sidebar() {
@@ -33,24 +25,12 @@ export default function Sidebar() {
     { id: 'transactions', label: '余额变动', icon: History, category: 'create', path: '/transactions' },
     { id: 'stats-transactions', label: '收支流水统计', icon: BarChart3, category: 'stats', path: '/statistics/transactions' },
     { id: 'stats-members', label: '会员增长趋势', icon: TrendingUp, category: 'stats', path: '/statistics/members' },
-    // { id: 'ai', label: 'AI 对话', icon: Bot, category: 'main', path: '/ai' },
-    // { id: 'memos', label: '备忘录', icon: StickyNote, category: 'create', path: '/memos' },
-    // { id: 'docs', label: '文档编写', icon: FileText, category: 'create', path: '/docs' },
-    // { id: 'snippets', label: '代码片段', icon: Code, category: 'create', path: '/snippets' },
-    // { id: 'plans', label: '计划管理', icon: Calendar, category: 'create', path: '/plans' },
-    // { id: 'mindmap', label: '思维导图', icon: GitGraph, category: 'create', path: '/mindmap' },
-    // { id: 'inspiration', label: '灵感画板', icon: Palette, category: 'create', path: '/inspiration' },
     { id: 'others', label: '其它应用', icon: MoreHorizontal, category: 'more', path: '/others' },
   ];
 
   const isActive = (path: string) => {
     if (path === '/' && pathname !== '/') return false;
     return pathname === path;
-  };
-
-  const handleLogout = () => {
-    // In a real app, you would clear auth tokens here
-    router.push('/login');
   };
 
   const currentLevel: 'ordinary' | 'pro' | 'max' = 'max';
