@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Lock, Mail, ArrowRight } from 'lucide-react';
+import { Lock, User, ArrowRight } from 'lucide-react';
 
 import Link from 'next/link';
 
@@ -19,12 +19,12 @@ export default function LoginPage() {
     setErrorMsg('');
     
     const formData = new FormData(e.target as HTMLFormElement);
-    const email = formData.get('email');
+    const username = formData.get('username');
     const password = formData.get('password');
 
     try {
       const response = await api.post('/auth/login', {
-        email,
+        username,
         password
       });
 
@@ -65,15 +65,15 @@ export default function LoginPage() {
 
         <form onSubmit={handleLogin} className="space-y-6">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-700">邮箱地址</label>
+            <label className="text-sm font-medium text-slate-700">用户名</label>
             <div className="relative">
-              <Mail className="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <User className="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input 
-                name="email"
-                type="email" 
-                defaultValue="newtest@example.com"
+                name="username"
+                type="text" 
+                defaultValue="admin"
                 className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-800"
-                placeholder="请输入您的邮箱"
+                placeholder="请输入您的用户名"
                 required
               />
             </div>

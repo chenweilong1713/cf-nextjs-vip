@@ -1,14 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { Camera, Save, X, Edit2, User, Lock, Mail } from 'lucide-react';
+import { Camera, Save, X, Edit2, User, Lock } from 'lucide-react';
 import Image from 'next/image';
 
 export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    nickname: '设计师',
-    email: 'designer@nebula.com',
+    username: 'admin',
     avatar: 'https://api.dicebear.com/9.x/avataaars/svg?seed=Felix',
     password: '',
     confirmPassword: ''
@@ -87,8 +86,7 @@ export default function ProfilePage() {
                     )}
                 </div>
                 
-                <h3 className="text-xl font-bold text-slate-800 mb-1">{savedData.nickname}</h3>
-                <p className="text-slate-500 text-sm mb-6">{savedData.email}</p>
+                <h3 className="text-xl font-bold text-slate-800 mb-1">{savedData.username}</h3>
                 
                 <div className="w-full pt-6 border-t border-slate-100 flex justify-between text-sm">
                     <div className="text-center flex-1 border-r border-slate-100">
@@ -113,32 +111,21 @@ export default function ProfilePage() {
                         <div className="space-y-2">
                             <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
                                 <User className="w-4 h-4 text-slate-400" />
-                                昵称
+                                用户名
                             </label>
                             {isEditing ? (
                                 <input 
                                     type="text" 
-                                    name="nickname"
-                                    value={formData.nickname}
+                                    name="username"
+                                    value={formData.username}
                                     onChange={handleInputChange}
                                     className="w-full px-4 py-2 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
                                 />
                             ) : (
                                 <div className="text-slate-800 px-4 py-2 bg-slate-50/50 rounded-xl border border-transparent">
-                                    {savedData.nickname}
+                                    {savedData.username}
                                 </div>
                             )}
-                        </div>
-
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium text-slate-700 flex items-center gap-2">
-                                <Mail className="w-4 h-4 text-slate-400" />
-                                邮箱地址
-                            </label>
-                            <div className="text-slate-800 px-4 py-2 bg-slate-50/50 rounded-xl border border-transparent flex justify-between items-center opacity-70">
-                                <span>{savedData.email}</span>
-                                {isEditing && <span className="text-xs text-slate-400 bg-slate-200 px-2 py-1 rounded">不可修改</span>}
-                            </div>
                         </div>
                     </div>
                 </section>

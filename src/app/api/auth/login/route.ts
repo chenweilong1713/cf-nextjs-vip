@@ -9,32 +9,32 @@ export async function POST(request: Request) {
         const db = (env as CloudflareEnv).DB;
 
         const body = await request.json();
-        const { email, password } = body as any;
+        const { username, password } = body as any;
 
-        if (!email || !password) {
-            return jsonResponse(error(400, 'Email and password are required'), 400);
+        if (!username || !password) {
+            return jsonResponse(error(400, 'Username and password are required'), 400);
         }
 
-        // Find user by email
+        // Find user by username
         const user = await db.prepare(
-            'SELECT * FROM users WHERE email = ?'
-        ).bind(email).first<any>();
+            'SELECT * FROM users WHERE username = ?'
+        ).bind(username).first<any>();
 
         if (!user) {
-             return jsonResponse(error(401, 'Invalid email or password'), 401);
+             return jsonResponse(error(401, 'Invalid username or password'), 401);
         }
 
         // Verify password
         const hashedPassword = await hashPassword(password);
         if (hashedPassword !== user.password_hash) {
-            return jsonResponse(error(401, 'Invalid email or password'), 401);
+            return jsonResponse(error(401, 'Invalid username or password'), 401);
         }
         
         // Remove sensitive info
         const { password_hash, ...userInfo } = user;
         
         // Generate JWT
-        const token = await signJWT({ id: user.id, email: user.email, nickname: user.nickname });
+        const token = await signJWT({ id: user.id, username: user.username });
         
         return jsonResponse(success({
             user: userInfo,

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Lock, Mail, ArrowRight, User, ShieldCheck } from 'lucide-react';
+import { Lock, ArrowRight, User, ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
 
 import api from '@/lib/axios';
@@ -20,15 +20,13 @@ export default function RegisterPage() {
     setErrorMsg('');
     
     const formData = new FormData(e.target as HTMLFormElement);
-    const nickname = formData.get('nickname');
-    const email = formData.get('email');
+    const username = formData.get('username');
     const password = formData.get('password');
     // const code = formData.get('code'); // Not implemented in backend
 
     try {
       const response = await api.post('/auth/register', {
-        nickname,
-        email,
+        username,
         password
       });
 
@@ -65,28 +63,14 @@ export default function RegisterPage() {
 
         <form onSubmit={handleRegister} className="space-y-6">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-700">昵称</label>
+            <label className="text-sm font-medium text-slate-700">用户名</label>
             <div className="relative">
               <User className="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input 
-                name="nickname"
+                name="username"
                 type="text" 
                 className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-800"
-                placeholder="请输入您的昵称"
-                required
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-700">邮箱地址</label>
-            <div className="relative">
-              <Mail className="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-              <input 
-                name="email"
-                type="email" 
-                className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-800"
-                placeholder="请输入您的邮箱"
+                placeholder="请输入您的用户名"
                 required
               />
             </div>
