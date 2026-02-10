@@ -36,7 +36,7 @@ export default function Sidebar() {
     // { id: 'plans', label: '计划管理', icon: Calendar, category: 'create', path: '/plans' },
     // { id: 'mindmap', label: '思维导图', icon: GitGraph, category: 'create', path: '/mindmap' },
     // { id: 'inspiration', label: '灵感画板', icon: Palette, category: 'create', path: '/inspiration' },
-    // { id: 'others', label: '其它应用', icon: MoreHorizontal, category: 'more', path: '/others' },
+    { id: 'others', label: '其它应用', icon: MoreHorizontal, category: 'more', path: '/others' },
   ];
 
   const isActive = (path: string) => {

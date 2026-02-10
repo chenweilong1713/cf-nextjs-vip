@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import api from '@/lib/axios';
-import { Search, Filter, ArrowUpRight, ArrowDownLeft, Coins, CreditCard, ChevronLeft, ChevronRight } from 'lucide-react';
+import { TableSkeleton } from '@/components/TableSkeleton';
+import { useToast } from '@/components/ToastProvider';
+import { Search, Filter, ArrowUpRight, ArrowDownLeft, Coins, CreditCard, ChevronLeft, ChevronRight, Loader2, Edit, X } from 'lucide-react';
 
 interface Transaction {
   id: number;
@@ -29,6 +31,12 @@ export default function TransactionsPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
+  const toast = useToast();
+
+  // Edit remark state
+  const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
+  const [remarkForm, setRemarkForm] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const fetchTransactions = async (page = 1) => {
     setLoading(true);
@@ -65,6 +73,36 @@ export default function TransactionsPage() {
     }
   };
 
+  const handleEditClick = (transaction: Transaction) => {
+    setEditingTransaction(transaction);
+    setRemarkForm(transaction.remark || '');
+  };
+
+  const handleUpdateRemark = async () => {
+    if (!editingTransaction) return;
+    
+    setIsSubmitting(true);
+    try {
+        const res = await api.put('/transactions', {
+            id: editingTransaction.id,
+            remark: remarkForm
+        });
+        
+        if (res.data.code === 200) {
+            toast.success('备注更新成功');
+            setEditingTransaction(null);
+            fetchTransactions(pagination.page); // Refresh list
+        } else {
+            toast.error(res.data.msg || '更新失败');
+        }
+    } catch (e: any) {
+        console.error(e);
+        toast.error(e.response?.data?.msg || '更新失败，请重试');
+    } finally {
+        setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="h-full flex flex-col">
       <div className="bg-white overflow-hidden flex flex-col flex-1 min-h-0">
@@ -72,7 +110,11 @@ export default function TransactionsPage() {
           <div className="flex items-center gap-4">
              <div className="flex items-center gap-2">
                 <div className="relative w-64">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    {loading && search ? (
+                        <Loader2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 animate-spin" />
+                    ) : (
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    )}
                     <input 
                     type="text" 
                     placeholder="搜索会员姓名或手机号..." 
@@ -107,11 +149,12 @@ export default function TransactionsPage() {
                 <th className="px-6 py-3 text-left tracking-wider bg-slate-50">变动金额/数量</th>
                 <th className="px-6 py-3 text-left tracking-wider bg-slate-50">变动后余额</th>
                 <th className="px-6 py-3 text-left tracking-wider bg-slate-50">备注</th>
+                <th className="px-6 py-3 text-right tracking-wider bg-slate-50">操作</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {loading ? (
-                <tr><td colSpan={6} className="px-6 py-8 text-center text-slate-400">加载中...</td></tr>
+                <TableSkeleton columns={6} rows={10} />
               ) : transactions.length === 0 ? (
                 <tr><td colSpan={6} className="px-6 py-8 text-center text-slate-400">暂无变动记录</td></tr>
               ) : (
@@ -149,6 +192,15 @@ export default function TransactionsPage() {
                     <td className="px-6 py-4 text-slate-500 text-sm max-w-xs truncate" title={t.remark}>
                       {t.remark || '-'}
                     </td>
+                    <td className="px-6 py-4 text-right">
+                        <button
+                            onClick={() => handleEditClick(t)}
+                            className="p-1 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-indigo-600 transition-colors"
+                            title="修改备注"
+                        >
+                            <Edit className="w-4 h-4" />
+                        </button>
+                    </td>
                   </tr>
                 ))
               )}
@@ -179,6 +231,52 @@ export default function TransactionsPage() {
             </div>
         </div>
       </div>
+
+      {/* Edit Remark Modal */}
+      {editingTransaction && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/20 backdrop-blur-sm">
+            <div className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200">
+                <div className="flex items-center justify-between p-4 border-b border-slate-100 bg-slate-50/50">
+                    <h3 className="font-semibold text-slate-800">修改备注</h3>
+                    <button 
+                        onClick={() => setEditingTransaction(null)}
+                        className="p-1 hover:bg-slate-200 rounded-lg text-slate-400 transition-colors"
+                    >
+                        <X className="w-5 h-5" />
+                    </button>
+                </div>
+                
+                <div className="p-6 space-y-4">
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-slate-700">备注内容</label>
+                        <textarea
+                            value={remarkForm}
+                            onChange={(e) => setRemarkForm(e.target.value)}
+                            placeholder="请输入备注信息..."
+                            rows={4}
+                            className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-sm resize-none"
+                        />
+                    </div>
+
+                    <div className="flex gap-3 pt-2">
+                        <button
+                            onClick={() => setEditingTransaction(null)}
+                            className="flex-1 px-4 py-2 border border-slate-200 text-slate-600 rounded-lg hover:bg-slate-50 hover:text-slate-900 transition-colors text-sm font-medium"
+                        >
+                            取消
+                        </button>
+                        <button
+                            onClick={handleUpdateRemark}
+                            disabled={isSubmitting}
+                            className="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm shadow-indigo-200 text-sm font-medium"
+                        >
+                            {isSubmitting ? '保存中...' : '保存修改'}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+      )}
     </div>
   );
 }

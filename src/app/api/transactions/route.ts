@@ -59,3 +59,35 @@ export async function GET(request: Request) {
         return jsonResponse(error(500, e.message), 500);
     }
 }
+
+export async function PUT(request: Request) {
+    try {
+        const { env } = await getCloudflareContext();
+        const db = (env as CloudflareEnv).DB;
+        const body = await request.json() as any;
+        const { id, remark } = body;
+
+        if (!id) {
+            return jsonResponse(error(400, '交易ID不能为空'), 400);
+        }
+
+        // Check if transaction exists
+        const transaction = await db.prepare('SELECT id FROM transactions WHERE id = ?').bind(id).first();
+        if (!transaction) {
+            return jsonResponse(error(404, '交易记录不存在'), 404);
+        }
+
+        const result = await db.prepare(
+            'UPDATE transactions SET remark = ? WHERE id = ?'
+        ).bind(remark || '', id).run();
+
+        if (!result.success) {
+            return jsonResponse(error(500, '更新备注失败'), 500);
+        }
+
+        return jsonResponse(success(null, '备注更新成功'));
+    } catch (e: any) {
+        console.error('Update transaction error:', e);
+        return jsonResponse(error(500, e.message), 500);
+    }
+}

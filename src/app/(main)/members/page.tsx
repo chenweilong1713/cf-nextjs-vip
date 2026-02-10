@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import api from '@/lib/axios';
 import { useToast } from '@/components/ToastProvider';
-import { Search, Plus, Coins, CreditCard, User, Phone, FileText, X, ChevronLeft, ChevronRight, MapPin, Share2, Activity, Calendar, Edit, History as HistoryIcon } from 'lucide-react';
+import { TableSkeleton } from '@/components/TableSkeleton';
+import { Search, Plus, Coins, CreditCard, User, Phone, FileText, X, ChevronLeft, ChevronRight, MapPin, Share2, Activity, Calendar, Edit, History as HistoryIcon, Loader2 } from 'lucide-react';
 
 interface Member {
   id: number;
@@ -184,7 +185,11 @@ export default function MembersPage() {
         <div className="p-4 border-b border-slate-100 flex-shrink-0 flex justify-between items-center gap-4">
           <div className="flex items-center gap-4">
             <div className="relative w-64">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                {loading && search ? (
+                    <Loader2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 animate-spin" />
+                ) : (
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                )}
                 <input 
                 type="text" 
                 placeholder="搜索会员姓名或手机号..." 
@@ -208,8 +213,7 @@ export default function MembersPage() {
             <thead className="bg-slate-50 text-slate-500 text-xs uppercase font-medium sticky top-0 z-10 shadow-sm">
               <tr>
                 <th className="px-4 py-3 whitespace-nowrap">ID</th>
-                <th className="px-4 py-3 whitespace-nowrap">姓名</th>
-                <th className="px-4 py-3 whitespace-nowrap">手机号</th>
+                <th className="px-4 py-3 whitespace-nowrap">会员</th>
                 <th className="px-4 py-3 whitespace-nowrap">性别</th>
                 <th className="px-4 py-3 whitespace-nowrap">余额</th>
                 <th className="px-4 py-3 whitespace-nowrap">积分</th>
@@ -224,15 +228,19 @@ export default function MembersPage() {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {loading ? (
-                <tr><td colSpan={13} className="px-6 py-8 text-center text-slate-400">加载中...</td></tr>
+                <TableSkeleton columns={12} rows={10} />
               ) : members.length === 0 ? (
-                <tr><td colSpan={13} className="px-6 py-8 text-center text-slate-400">暂无会员数据</td></tr>
+                <tr><td colSpan={12} className="px-6 py-8 text-center text-slate-400">暂无会员数据</td></tr>
               ) : (
                 members.map((member) => (
                   <tr key={member.id} className="hover:bg-slate-50 transition-colors">
                     <td className="px-4 py-3 text-slate-500">{member.id}</td>
-                    <td className="px-4 py-3 font-medium text-slate-800">{member.name}</td>
-                    <td className="px-4 py-3 text-slate-600 font-mono">{member.phone}</td>
+                    <td className="px-4 py-3">
+                        <div>
+                            <div className="font-medium text-slate-800">{member.name}</div>
+                            <div className="text-xs text-slate-400 font-mono">{member.phone}</div>
+                        </div>
+                    </td>
                     <td className="px-4 py-3">
                         <span className={`px-2 py-0.5 rounded text-xs ${
                             member.gender === 'male' ? 'bg-blue-50 text-blue-600' :

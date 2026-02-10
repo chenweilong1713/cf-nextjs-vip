@@ -1,30 +1,344 @@
 'use client';
 
-import { MoreHorizontal, ArrowUpRight } from 'lucide-react';
-import MemoWidget from './MemoWidget';
-import TodoWidget from './TodoWidget';
-import BookmarkWidget from './BookmarkWidget';
+import React, { useEffect, useMemo, useState } from 'react';
+import ReactECharts from 'echarts-for-react';
+import { Users, CreditCard, Coins, ArrowUpRight, ArrowDownRight, Activity, Loader2 } from 'lucide-react';
+import api from '@/lib/axios';
 
 export default function Dashboard() {
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<any>(null);
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchStats = async () => {
+    try {
+      setLoading(true);
+      const res = await api.get('/dashboard/stats');
+      if (res.data.code === 200) {
+        setData(res.data.data);
+      }
+    } catch (error) {
+      console.error('Failed to fetch dashboard stats:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 1. Member Growth (Line Chart)
+  const memberGrowthOption = useMemo(() => {
+    if (!data?.charts?.memberGrowth) return {};
+    
+    const dates = data.charts.memberGrowth.map((item: any) => item.date.slice(5)); // '2023-10-01' -> '10-01'
+    const counts = data.charts.memberGrowth.map((item: any) => item.count);
+
+    return {
+      tooltip: {
+        trigger: 'axis'
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: dates,
+        axisLine: { lineStyle: { color: '#94a3b8' } }
+      },
+      yAxis: {
+        type: 'value',
+        axisLine: { show: false },
+        axisTick: { show: false },
+        splitLine: { lineStyle: { color: '#f1f5f9' } },
+        axisLabel: { color: '#94a3b8' }
+      },
+      series: [
+        {
+          name: '新增会员',
+          type: 'line',
+          smooth: true,
+          data: counts,
+          itemStyle: { color: '#6366f1' },
+          areaStyle: {
+            color: {
+              type: 'linear',
+              x: 0, y: 0, x2: 0, y2: 1,
+              colorStops: [
+                { offset: 0, color: 'rgba(99, 102, 241, 0.3)' },
+                { offset: 1, color: 'rgba(99, 102, 241, 0)' }
+              ]
+            }
+          }
+        }
+      ]
+    };
+  }, [data]);
+
+  // 2. Transaction Volume (Bar Chart)
+  const transactionOption = useMemo(() => {
+    if (!data?.charts?.transactionVolume) return {};
+
+    const { dates, recharge, consumption } = data.charts.transactionVolume;
+    const formattedDates = dates.map((d: string) => d.slice(5));
+
+    return {
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: { type: 'shadow' }
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        data: formattedDates,
+        axisLine: { lineStyle: { color: '#94a3b8' } }
+      },
+      yAxis: {
+        type: 'value',
+        axisLine: { show: false },
+        splitLine: { lineStyle: { color: '#f1f5f9' } },
+        axisLabel: { color: '#94a3b8' }
+      },
+      series: [
+        {
+          name: '充值金额',
+          type: 'bar',
+          stack: 'total',
+          barWidth: '40%',
+          data: recharge,
+          itemStyle: { color: '#10b981' }
+        },
+        {
+          name: '消费金额',
+          type: 'bar',
+          stack: 'total',
+          data: consumption.map((v: number) => -v), // Display as negative
+          itemStyle: { color: '#f43f5e' }
+        }
+      ]
+    };
+  }, [data]);
+
+  // 3. Member Level Distribution (Pie Chart)
+  const memberLevelOption = useMemo(() => {
+    if (!data?.charts?.memberLevel) return {};
+    
+    // Map colors based on level name
+    const colorMap: Record<string, string> = {
+        '普通会员': '#94a3b8',
+        'Pro 会员': '#6366f1',
+        'Max 会员': '#f59e0b'
+    };
+
+    const seriesData = data.charts.memberLevel.map((item: any) => ({
+        value: item.count,
+        name: item.level,
+        itemStyle: { color: colorMap[item.level] || '#cbd5e1' }
+    }));
+
+    return {
+      tooltip: {
+        trigger: 'item'
+      },
+      legend: {
+        bottom: '0%',
+        left: 'center',
+        icon: 'circle'
+      },
+      series: [
+        {
+          name: '会员等级',
+          type: 'pie',
+          radius: ['40%', '70%'],
+          avoidLabelOverlap: false,
+          itemStyle: {
+            borderRadius: 10,
+            borderColor: '#fff',
+            borderWidth: 2
+          },
+          label: {
+            show: false,
+            position: 'center'
+          },
+          emphasis: {
+            label: {
+              show: true,
+              fontSize: 16,
+              fontWeight: 'bold'
+            }
+          },
+          labelLine: {
+            show: false
+          },
+          data: seriesData
+        }
+      ]
+    };
+  }, [data]);
+
+  // 4. Points Activity (Radar Chart)
+  const pointsActivityOption = useMemo(() => {
+    if (!data?.charts?.pointsActivity) return {};
+
+    const { indicator, data: radarData } = data.charts.pointsActivity;
+
+    return {
+      tooltip: {},
+      radar: {
+        indicator: indicator,
+        splitArea: {
+            areaStyle: {
+                color: ['#f8fafc', '#f1f5f9', '#e2e8f0', '#cbd5e1'].reverse()
+            }
+        },
+        axisName: {
+            color: '#64748b'
+        }
+      },
+      series: [
+        {
+          name: '积分活动',
+          type: 'radar',
+          data: [
+            {
+              value: radarData,
+              name: '积分变动频次',
+              itemStyle: { color: '#3b82f6' },
+              areaStyle: { opacity: 0.2 }
+            }
+          ]
+        }
+      ]
+    };
+  }, [data]);
+
+  if (loading) {
+    return (
+        <div className="flex h-[400px] w-full items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+    );
+  }
+
+  if (!data) {
+      return <div className="p-6 text-center text-slate-500">暂无数据，请稍后重试。</div>;
+  }
+
   return (
-    <div className="p-4 space-y-4 w-full max-w-[1400px] animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="p-6 space-y-6 w-full max-w-[1600px] animate-in fade-in slide-in-from-bottom-4 duration-500">
       
-      {/* Top Section: Todo + Memo */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-         <div className="lg:col-span-2 h-[360px]">
-            <TodoWidget />
-         </div>
-         <div className="lg:col-span-1 h-[360px]">
-           <MemoWidget />
+      {/* 1. Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <StatsCard 
+          title="总会员数" 
+          value={data.summary.totalMembers.toLocaleString()} 
+          trend="动态" 
+          trendUp={true} 
+          icon={Users} 
+          iconBg="bg-indigo-500/10"
+          iconColor="text-indigo-600"
+        />
+        <StatsCard 
+          title="今日消费额" 
+          value={`¥ ${data.summary.todaySales.toLocaleString(undefined, { minimumFractionDigits: 2 })}`} 
+          trend="实时" 
+          trendUp={true} 
+          icon={CreditCard} 
+          iconBg="bg-emerald-500/10"
+          iconColor="text-emerald-600"
+        />
+        <StatsCard 
+          title="积分池总览" 
+          value={data.summary.totalPoints.toLocaleString()} 
+          trend="累计" 
+          trendUp={true} 
+          icon={Coins} 
+          iconBg="bg-amber-500/10"
+          iconColor="text-amber-600"
+        />
+        <StatsCard 
+          title="活跃度指数" 
+          value={`${data.summary.activeRate}%`} 
+          trend="7日活跃占比" 
+          trendUp={Number(data.summary.activeRate) > 50} 
+          icon={Activity} 
+          iconBg="bg-rose-500/10"
+          iconColor="text-rose-600"
+        />
+      </div>
+
+      {/* 2. Charts Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        {/* Main Trend Chart */}
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-bold text-slate-800">会员增长趋势</h3>
+            <span className="text-xs font-medium text-slate-400 bg-slate-50 px-2 py-1 rounded-full">近7天</span>
+          </div>
+          <ReactECharts option={memberGrowthOption} style={{ height: '300px' }} />
+        </div>
+
+        {/* Transaction Analysis */}
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-bold text-slate-800">收支流水分析</h3>
+            <span className="text-xs font-medium text-slate-400 bg-slate-50 px-2 py-1 rounded-full">本周</span>
+          </div>
+          <ReactECharts option={transactionOption} style={{ height: '300px' }} />
+        </div>
+
+        {/* Pie Chart & Radar Chart */}
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-bold text-slate-800">会员等级分布</h3>
+            <span className="text-xs font-medium text-slate-400 bg-slate-50 px-2 py-1 rounded-full">实时</span>
+          </div>
+          <ReactECharts option={memberLevelOption} style={{ height: '300px' }} />
+        </div>
+
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-bold text-slate-800">积分活动画像</h3>
+            <span className="text-xs font-medium text-slate-400 bg-slate-50 px-2 py-1 rounded-full">近30天</span>
+          </div>
+          <ReactECharts option={pointsActivityOption} style={{ height: '300px' }} />
+        </div>
+
+      </div>
+
+    </div>
+  );
+}
+
+function StatsCard({ title, value, trend, trendUp, icon: Icon, iconBg, iconColor }: any) {
+  return (
+    <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
+      <div className="flex items-start justify-between">
+        <div>
+          <p className="text-sm font-medium text-slate-500 mb-1">{title}</p>
+          <h3 className="text-2xl font-bold text-slate-800">{value}</h3>
+        </div>
+        <div className={`p-3 rounded-xl ${iconBg}`}>
+          <Icon className={`w-6 h-6 ${iconColor}`} />
         </div>
       </div>
-
-      {/* Bookmarks Section */}
-      <div>
-        <h3 className="text-sm font-bold text-slate-700 mb-3 px-1">常用书签</h3>
-        <BookmarkWidget />
+      <div className="mt-4 flex items-center gap-2">
+        <span className={`text-xs font-medium flex items-center gap-1 ${trendUp ? 'text-emerald-600' : 'text-rose-600'}`}>
+          {trendUp ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
+          {trend}
+        </span>
+        <span className="text-xs text-slate-400">{trend === '动态' || trend === '实时' ? '数据更新' : '说明'}</span>
       </div>
-
     </div>
   );
 }
