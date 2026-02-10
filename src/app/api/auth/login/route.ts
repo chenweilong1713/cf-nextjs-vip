@@ -12,7 +12,7 @@ export async function POST(request: Request) {
         const { username, password } = body as any;
 
         if (!username || !password) {
-            return jsonResponse(error(400, 'Username and password are required'), 400);
+            return jsonResponse(error(400, '用户名和密码不能为空'), 400);
         }
 
         // Find user by username
@@ -21,13 +21,13 @@ export async function POST(request: Request) {
         ).bind(username).first<any>();
 
         if (!user) {
-             return jsonResponse(error(401, 'Invalid username or password'), 401);
+             return jsonResponse(error(401, '用户名或密码错误'), 401);
         }
 
         // Verify password
         const hashedPassword = await hashPassword(password);
         if (hashedPassword !== user.password_hash) {
-            return jsonResponse(error(401, 'Invalid username or password'), 401);
+            return jsonResponse(error(401, '用户名或密码错误'), 401);
         }
         
         // Remove sensitive info
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
         return jsonResponse(success({
             user: userInfo,
             token
-        }, 'Login successful'));
+        }, '登录成功'));
 
     } catch (e: any) {
         console.error('Login error:', e);

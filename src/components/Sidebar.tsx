@@ -16,7 +16,9 @@ import {
   Crown,
   Bot,
   StickyNote,
-  Code
+  Code,
+  Users,
+  History
 } from 'lucide-react';
 
 export default function Sidebar() {
@@ -24,15 +26,17 @@ export default function Sidebar() {
   const router = useRouter();
 
   const menuItems = [
-    { id: 'dashboard', label: '控制台', icon: LayoutDashboard, category: 'main', path: '/' },
+    { id: 'dashboard', label: '首页', icon: LayoutDashboard, category: 'main', path: '/' },
+    { id: 'members', label: '会员管理', icon: Users, category: 'create', path: '/members' },
+    { id: 'transactions', label: '余额变动', icon: History, category: 'create', path: '/transactions' },
     // { id: 'ai', label: 'AI 对话', icon: Bot, category: 'main', path: '/ai' },
-    { id: 'memos', label: '备忘录', icon: StickyNote, category: 'create', path: '/memos' },
-    { id: 'docs', label: '文档编写', icon: FileText, category: 'create', path: '/docs' },
+    // { id: 'memos', label: '备忘录', icon: StickyNote, category: 'create', path: '/memos' },
+    // { id: 'docs', label: '文档编写', icon: FileText, category: 'create', path: '/docs' },
     // { id: 'snippets', label: '代码片段', icon: Code, category: 'create', path: '/snippets' },
-    { id: 'plans', label: '计划管理', icon: Calendar, category: 'create', path: '/plans' },
-    { id: 'mindmap', label: '思维导图', icon: GitGraph, category: 'create', path: '/mindmap' },
-    { id: 'inspiration', label: '灵感画板', icon: Palette, category: 'create', path: '/inspiration' },
-    { id: 'others', label: '其它应用', icon: MoreHorizontal, category: 'more', path: '/others' },
+    // { id: 'plans', label: '计划管理', icon: Calendar, category: 'create', path: '/plans' },
+    // { id: 'mindmap', label: '思维导图', icon: GitGraph, category: 'create', path: '/mindmap' },
+    // { id: 'inspiration', label: '灵感画板', icon: Palette, category: 'create', path: '/inspiration' },
+    // { id: 'others', label: '其它应用', icon: MoreHorizontal, category: 'more', path: '/others' },
   ];
 
   const isActive = (path: string) => {
