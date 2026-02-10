@@ -10,7 +10,7 @@ const PUBLIC_PATHS = [
   '/register',
 ];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // 1. Check if the path is public
@@ -44,14 +44,14 @@ export async function middleware(request: NextRequest) {
   }
 
   // 3. Page Route Protection (Frontend)
-  // Since the user is storing token in localStorage/Axios, the middleware (server-side) 
+  // Since the user is storing token in localStorage/Axios, the proxy (server-side) 
   // cannot easily access it unless it's in a cookie.
   // The user requested "frontend page needs to perform login interception".
   // For better security/UX, we'll let the frontend Client Component handle redirection 
   // if the token is missing in localStorage.
   // However, if we wanted server-side redirect, we would need to store the token in a cookie.
   // Given the current instruction "frontend page needs to perform login interception",
-  // we will SKIP page redirection in middleware and handle it in the Client Component (AuthGuard).
+  // we will SKIP page redirection in proxy and handle it in the Client Component (AuthGuard).
   
   return NextResponse.next();
 }

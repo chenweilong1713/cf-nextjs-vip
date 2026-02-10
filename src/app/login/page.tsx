@@ -71,7 +71,7 @@ export default function LoginPage() {
               <input 
                 name="username"
                 type="text" 
-                defaultValue="admin"
+                defaultValue=""
                 className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-800"
                 placeholder="请输入您的用户名"
                 required
@@ -86,7 +86,7 @@ export default function LoginPage() {
               <input 
                 name="password"
                 type="password" 
-                defaultValue="password123"
+                defaultValue=""
                 className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-800"
                 placeholder="请输入您的密码"
                 required

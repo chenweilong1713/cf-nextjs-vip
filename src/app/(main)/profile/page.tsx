@@ -1,30 +1,99 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Camera, Save, X, Edit2, User, Lock } from 'lucide-react';
 import Image from 'next/image';
+import api from '@/lib/axios';
+import { useToast } from '@/components/ToastProvider';
 
 export default function ProfilePage() {
+  const notify = useToast();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    username: 'admin',
+    username: '',
     avatar: 'https://api.dicebear.com/9.x/avataaars/svg?seed=Felix',
     password: '',
     confirmPassword: ''
   });
 
   const [savedData, setSavedData] = useState({ ...formData });
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // Load user info from localStorage on mount
+    const userStr = localStorage.getItem('user');
+    if (userStr) {
+      try {
+        const user = JSON.parse(userStr);
+        setFormData(prev => ({ ...prev, username: user.username || '' }));
+        setSavedData(prev => ({ ...prev, username: user.username || '' }));
+      } catch (e) {
+        console.error('Failed to parse user from localStorage', e);
+      }
+    }
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSave = () => {
-    // In a real app, you would validate and send data to API here
-    setSavedData({ ...formData, password: '', confirmPassword: '' });
-    setFormData(prev => ({ ...prev, password: '', confirmPassword: '' }));
-    setIsEditing(false);
+  const handleSave = async () => {
+    // Validation
+    if (!formData.username.trim()) {
+      notify.error('用户名不能为空');
+      return;
+    }
+
+    if (formData.password || formData.confirmPassword) {
+      if (formData.password !== formData.confirmPassword) {
+        notify.error('两次输入的密码不一致');
+        return;
+      }
+      if (formData.password.length < 6) {
+        notify.error('密码长度不能少于6位');
+        return;
+      }
+    }
+
+    setLoading(true);
+    try {
+      const payload: any = {
+        username: formData.username
+      };
+      
+      if (formData.password) {
+        payload.password = formData.password;
+      }
+
+      const response = await api.put('/user/profile', payload);
+
+      if (response.data.code === 200) {
+        const updatedUser = response.data.data;
+        
+        // Update local state
+        setSavedData({ ...formData, password: '', confirmPassword: '' });
+        setFormData(prev => ({ ...prev, password: '', confirmPassword: '' }));
+        setIsEditing(false);
+        
+        // Update localStorage
+        const userStr = localStorage.getItem('user');
+        if (userStr) {
+            const user = JSON.parse(userStr);
+            const newUser = { ...user, ...updatedUser };
+            localStorage.setItem('user', JSON.stringify(newUser));
+        }
+        
+        notify.success('个人信息更新成功');
+      } else {
+        notify.error(response.data.message || '更新失败');
+      }
+    } catch (error: any) {
+      console.error('Update profile error:', error);
+      notify.error(error.response?.data?.message || '更新失败，请稍后重试');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCancel = () => {
@@ -51,17 +120,28 @@ export default function ProfilePage() {
             <div className="flex gap-3">
                 <button 
                     onClick={handleCancel}
-                    className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-600 rounded-lg hover:bg-slate-50 transition-colors"
+                    disabled={loading}
+                    className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-600 rounded-lg hover:bg-slate-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     <X className="w-4 h-4" />
                     <span>取消</span>
                 </button>
                 <button 
                     onClick={handleSave}
-                    className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200"
+                    disabled={loading}
+                    className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                    <Save className="w-4 h-4" />
-                    <span>保存更改</span>
+                    {loading ? (
+                        <>
+                            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                            <span>保存中...</span>
+                        </>
+                    ) : (
+                        <>
+                            <Save className="w-4 h-4" />
+                            <span>保存更改</span>
+                        </>
+                    )}
                 </button>
             </div>
         )}
