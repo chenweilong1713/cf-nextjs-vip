@@ -2,6 +2,9 @@
 
 基于 Next.js 和 Cloudflare 全栈构建的会员管理系统。提供会员管理、余额充值/消费、数据统计分析等功能。
 
+## 截图
+![alt text](image.png)
+
 ## 🛠️ 技术栈 (Tech Stack)
 
 - **框架**: [Next.js 16](https://nextjs.org/) (App Router)
