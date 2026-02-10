@@ -40,7 +40,7 @@ export async function GET(request: Request) {
         const total = countResult?.total || 0;
 
         // Get data
-        const query = `SELECT t.*, m.name as member_name, m.phone as member_phone ${baseQuery} ORDER BY t.created_at DESC LIMIT ? OFFSET ?`;
+        const query = `SELECT t.*, m.name as member_name, m.phone as member_phone ${baseQuery} ORDER BY t.id DESC LIMIT ? OFFSET ?`;
         params.push(pageSize, offset);
 
         const results = await db.prepare(query).bind(...params).all();

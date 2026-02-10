@@ -128,21 +128,26 @@ export default function Dashboard() {
     };
   }, [data]);
 
-  // 3. Member Level Distribution (Pie Chart)
-  const memberLevelOption = useMemo(() => {
-    if (!data?.charts?.memberLevel) return {};
+  // 3. Member Gender Distribution (Pie Chart)
+  const memberGenderOption = useMemo(() => {
+    if (!data?.charts?.memberGender) return {};
     
-    // Map colors based on level name
-    const colorMap: Record<string, string> = {
-        '普通会员': '#94a3b8',
-        'Pro 会员': '#6366f1',
-        'Max 会员': '#f59e0b'
+    const labelMap: Record<string, string> = {
+        'male': '男',
+        'female': '女',
+        'unknown': '未知'
     };
 
-    const seriesData = data.charts.memberLevel.map((item: any) => ({
+    const colorMap: Record<string, string> = {
+        'male': '#3b82f6',
+        'female': '#ec4899',
+        'unknown': '#94a3b8'
+    };
+
+    const seriesData = data.charts.memberGender.map((item: any) => ({
         value: item.count,
-        name: item.level,
-        itemStyle: { color: colorMap[item.level] || '#cbd5e1' }
+        name: labelMap[item.gender] || item.gender,
+        itemStyle: { color: colorMap[item.gender] || '#cbd5e1' }
     }));
 
     return {
@@ -156,7 +161,7 @@ export default function Dashboard() {
       },
       series: [
         {
-          name: '会员等级',
+          name: '性别分布',
           type: 'pie',
           radius: ['40%', '70%'],
           avoidLabelOverlap: false,
@@ -185,37 +190,49 @@ export default function Dashboard() {
     };
   }, [data]);
 
-  // 4. Points Activity (Radar Chart)
-  const pointsActivityOption = useMemo(() => {
-    if (!data?.charts?.pointsActivity) return {};
+  // 4. User Channel Distribution (Pie/Bar Chart) - Replaced Points Activity
+  const userChannelOption = useMemo(() => {
+    if (!data?.charts?.userChannel) return {};
 
-    const { indicator, data: radarData } = data.charts.pointsActivity;
+    const seriesData = data.charts.userChannel.map((item: any) => ({
+      value: item.count,
+      name: item.channel || '未知来源'
+    }));
 
     return {
-      tooltip: {},
-      radar: {
-        indicator: indicator,
-        splitArea: {
-            areaStyle: {
-                color: ['#f8fafc', '#f1f5f9', '#e2e8f0', '#cbd5e1'].reverse()
-            }
-        },
-        axisName: {
-            color: '#64748b'
-        }
+      tooltip: {
+        trigger: 'item'
+      },
+      legend: {
+        top: '5%',
+        left: 'center'
       },
       series: [
         {
-          name: '积分活动',
-          type: 'radar',
-          data: [
-            {
-              value: radarData,
-              name: '积分变动频次',
-              itemStyle: { color: '#3b82f6' },
-              areaStyle: { opacity: 0.2 }
+          name: '用户来源',
+          type: 'pie',
+          radius: ['40%', '70%'],
+          avoidLabelOverlap: false,
+          itemStyle: {
+            borderRadius: 10,
+            borderColor: '#fff',
+            borderWidth: 2
+          },
+          label: {
+            show: false,
+            position: 'center'
+          },
+          emphasis: {
+            label: {
+              show: true,
+              fontSize: 16,
+              fontWeight: 'bold'
             }
-          ]
+          },
+          labelLine: {
+            show: false
+          },
+          data: seriesData
         }
       ]
     };
@@ -300,18 +317,18 @@ export default function Dashboard() {
         {/* Pie Chart & Radar Chart */}
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-bold text-slate-800">会员等级分布</h3>
+            <h3 className="text-lg font-bold text-slate-800">用户性别分布</h3>
             <span className="text-xs font-medium text-slate-400 bg-slate-50 px-2 py-1 rounded-full">实时</span>
           </div>
-          <ReactECharts option={memberLevelOption} style={{ height: '300px' }} />
+          <ReactECharts option={memberGenderOption} style={{ height: '300px' }} />
         </div>
 
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-bold text-slate-800">积分活动画像</h3>
-            <span className="text-xs font-medium text-slate-400 bg-slate-50 px-2 py-1 rounded-full">近30天</span>
+            <h3 className="text-lg font-bold text-slate-800">用户画像 (来源渠道)</h3>
+            <span className="text-xs font-medium text-slate-400 bg-slate-50 px-2 py-1 rounded-full">全部</span>
           </div>
-          <ReactECharts option={pointsActivityOption} style={{ height: '300px' }} />
+          <ReactECharts option={userChannelOption} style={{ height: '300px' }} />
         </div>
 
       </div>

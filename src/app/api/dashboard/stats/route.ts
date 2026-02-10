@@ -89,50 +89,21 @@ export async function GET(request: Request) {
             transactionData.consumption.push(found ? found.consumption : 0); // Consumption as positive for bar chart
         }
 
-        // 4. Member Level Distribution
-        const levelResult = await db.prepare(`
+        // 4. Member Gender Distribution
+        const genderResult = await db.prepare(`
             SELECT 
-                CASE 
-                    WHEN points < 1000 THEN '普通会员'
-                    WHEN points < 5000 THEN 'Pro 会员'
-                    ELSE 'Max 会员'
-                END as level,
+                gender,
                 COUNT(*) as count
             FROM members
-            GROUP BY level
-        `).all<{ level: string, count: number }>();
+            GROUP BY gender
+        `).all<{ gender: string, count: number }>();
 
-        // 5. Points Activity (Radar) - Last 30 days
-        // Simplify to just a few categories based on remark matching
-        // Since we generated remarks: '签到', '消费赠送', '活动奖励', '积分兑换'
-        const pointsActivityResult = await db.prepare(`
-            SELECT remark, COUNT(*) as count 
-            FROM transactions 
-            WHERE type = 'points' 
-            AND created_at >= date('now', '-30 days')
-            GROUP BY remark
-        `).all<{ remark: string, count: number }>();
-
-        const radarIndicator = [
-            { name: '签到', max: 0 },
-            { name: '消费赠送', max: 0 },
-            { name: '活动奖励', max: 0 },
-            { name: '积分兑换', max: 0 }
-        ];
-        
-        const radarDataValues = [0, 0, 0, 0];
-        let maxVal = 0;
-
-        pointsActivityResult.results.forEach(r => {
-            const idx = radarIndicator.findIndex(i => r.remark.includes(i.name));
-            if (idx !== -1) {
-                radarDataValues[idx] += r.count;
-                if (radarDataValues[idx] > maxVal) maxVal = radarDataValues[idx];
-            }
-        });
-
-        // Update max for radar
-        radarIndicator.forEach(i => i.max = maxVal + 10);
+        // 5. User Channel Distribution (User Persona)
+        const channelResult = await db.prepare(`
+            SELECT channel, COUNT(*) as count 
+            FROM members 
+            GROUP BY channel
+        `).all<{ channel: string, count: number }>();
 
         return jsonResponse(success({
             summary: {
@@ -144,11 +115,8 @@ export async function GET(request: Request) {
             charts: {
                 memberGrowth: memberGrowthData,
                 transactionVolume: transactionData,
-                memberLevel: levelResult.results,
-                pointsActivity: {
-                    indicator: radarIndicator,
-                    data: radarDataValues
-                }
+                memberGender: genderResult.results,
+                userChannel: channelResult.results
             }
         }));
 
