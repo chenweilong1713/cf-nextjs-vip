@@ -25,7 +25,7 @@ export default function Sidebar() {
     { id: 'transactions', label: '余额变动', icon: History, category: 'create', path: '/transactions' },
     { id: 'stats-transactions', label: '收支流水统计', icon: BarChart3, category: 'stats', path: '/statistics/transactions' },
     { id: 'stats-members', label: '会员增长趋势', icon: TrendingUp, category: 'stats', path: '/statistics/members' },
-    { id: 'others', label: '其它应用', icon: MoreHorizontal, category: 'more', path: '/others' },
+    { id: 'others', label: '短信配置', icon: MoreHorizontal, category: 'more', path: '/others' },
   ];
 
   const isActive = (path: string) => {

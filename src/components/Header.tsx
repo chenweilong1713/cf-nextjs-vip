@@ -13,20 +13,20 @@ export default function Header() {
   return (
     <header className="h-12 flex items-center justify-between px-4 border-b border-slate-200 bg-white sticky top-0 z-50 relative">
       <div>
-        <h1 className="text-base font-bold text-slate-800">早上好, 设计师 👋</h1>
+        {/* <h1 className="text-base font-bold text-slate-800">您好👋</h1> */}
       </div>
       
       <div className="flex items-center gap-4">
-        <div className="relative">
+        {/* <div className="relative">
           <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <input 
             type="text" 
             placeholder="搜索文档、计划..." 
             className="pl-9 pr-3 py-1.5 bg-slate-100 rounded-full text-xs text-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 w-56 transition-all"
           />
-        </div>
+        </div> */}
         
-        <div className="relative">
+        {/* <div className="relative">
             <button 
                 onClick={() => setShowNotifications(!showNotifications)}
                 className={`relative p-1.5 transition-colors rounded-full cursor-pointer ${showNotifications ? 'text-indigo-600 bg-indigo-50' : 'text-slate-400 hover:text-indigo-600'}`}
@@ -38,7 +38,7 @@ export default function Header() {
             {showNotifications && (
                 <NotificationDropdown onClose={() => setShowNotifications(false)} />
             )}
-        </div>
+        </div> */}
         
         <div className="relative">
           <button 
