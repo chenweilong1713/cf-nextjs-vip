@@ -8,8 +8,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Nebula Workspace | 极简工作台",
-  description: "Nebula Workspace Dashboard",
+  title: "VIP管理系统 | 实现两年半",
+  description: "独立版本VIP管理系统",
 };
 
 export default function RootLayout({

@@ -24,8 +24,8 @@ export default function Sidebar() {
   const router = useRouter();
 
   const menuItems = [
-    { id: 'dashboard', label: '工作台', icon: LayoutDashboard, category: 'main', path: '/' },
-    { id: 'ai', label: 'AI 对话', icon: Bot, category: 'main', path: '/ai' },
+    { id: 'dashboard', label: '控制台', icon: LayoutDashboard, category: 'main', path: '/' },
+    // { id: 'ai', label: 'AI 对话', icon: Bot, category: 'main', path: '/ai' },
     { id: 'memos', label: '备忘录', icon: StickyNote, category: 'create', path: '/memos' },
     { id: 'docs', label: '文档编写', icon: FileText, category: 'create', path: '/docs' },
     // { id: 'snippets', label: '代码片段', icon: Code, category: 'create', path: '/snippets' },
@@ -84,14 +84,14 @@ export default function Sidebar() {
       <div className="p-5">
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 bg-indigo-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-indigo-200">
-            <Layers className="w-4 h-4" />
+            <level.icon className="w-4 h-4" />
           </div>
-          <span className="text-base font-bold tracking-tight">Nebula.</span>
+          <span className="text-base font-bold tracking-tight">VIP 管理系统</span>
         </div>
       </div>
 
       <nav className="flex-1 px-3 space-y-1 overflow-y-auto">
-        <div className="text-[10px] font-semibold text-slate-400 px-3 py-1.5 uppercase tracking-wider">主页</div>
+        <div className="text-[10px] font-semibold text-slate-400 px-3 py-1.5 uppercase tracking-wider">首页</div>
         
         {menuItems.filter(item => item.category === 'main').map((item) => (
            <Link
@@ -108,7 +108,7 @@ export default function Sidebar() {
            </Link>
         ))}
         
-        <div className="mt-6 text-[10px] font-semibold text-slate-400 px-3 py-1.5 uppercase tracking-wider">创作工具</div>
+        <div className="mt-6 text-[10px] font-semibold text-slate-400 px-3 py-1.5 uppercase tracking-wider">功能菜单</div>
         
         {menuItems.filter(item => item.category === 'create').map((item) => (
            <Link
