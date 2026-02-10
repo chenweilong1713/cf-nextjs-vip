@@ -18,7 +18,9 @@ import {
   StickyNote,
   Code,
   Users,
-  History
+  History,
+  BarChart3,
+  TrendingUp
 } from 'lucide-react';
 
 export default function Sidebar() {
@@ -29,6 +31,8 @@ export default function Sidebar() {
     { id: 'dashboard', label: '首页', icon: LayoutDashboard, category: 'main', path: '/' },
     { id: 'members', label: '会员管理', icon: Users, category: 'create', path: '/members' },
     { id: 'transactions', label: '余额变动', icon: History, category: 'create', path: '/transactions' },
+    { id: 'stats-transactions', label: '收支流水统计', icon: BarChart3, category: 'stats', path: '/statistics/transactions' },
+    { id: 'stats-members', label: '会员增长趋势', icon: TrendingUp, category: 'stats', path: '/statistics/members' },
     // { id: 'ai', label: 'AI 对话', icon: Bot, category: 'main', path: '/ai' },
     // { id: 'memos', label: '备忘录', icon: StickyNote, category: 'create', path: '/memos' },
     // { id: 'docs', label: '文档编写', icon: FileText, category: 'create', path: '/docs' },
@@ -115,6 +119,23 @@ export default function Sidebar() {
         <div className="mt-6 text-[10px] font-semibold text-slate-400 px-3 py-1.5 uppercase tracking-wider">功能菜单</div>
         
         {menuItems.filter(item => item.category === 'create').map((item) => (
+           <Link
+             key={item.id}
+             href={item.path}
+             className={`w-full sidebar-item flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 ${
+               isActive(item.path)
+                 ? 'bg-white text-indigo-600 shadow-[0_4px_12px_rgba(99,102,241,0.1)]' 
+                 : 'text-slate-600 hover:bg-white hover:text-indigo-600'
+             }`}
+           >
+             <item.icon className="w-4 h-4" />
+             <span className="font-medium text-sm">{item.label}</span>
+           </Link>
+        ))}
+
+        <div className="mt-6 text-[10px] font-semibold text-slate-400 px-3 py-1.5 uppercase tracking-wider">统计信息</div>
+        
+        {menuItems.filter(item => item.category === 'stats').map((item) => (
            <Link
              key={item.id}
              href={item.path}

@@ -11,7 +11,7 @@ export default function Header() {
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   return (
-    <header className="h-12 flex items-center justify-between px-4 border-b border-slate-200 bg-white sticky top-0 z-10 relative">
+    <header className="h-12 flex items-center justify-between px-4 border-b border-slate-200 bg-white sticky top-0 z-50 relative">
       <div>
         <h1 className="text-base font-bold text-slate-800">早上好, 设计师 👋</h1>
       </div>
