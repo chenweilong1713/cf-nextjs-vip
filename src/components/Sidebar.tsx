@@ -148,7 +148,7 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      <div className="p-3 border-t border-slate-100">
+      {/* <div className="p-3 border-t border-slate-100">
         <div className={`p-3 rounded-xl mb-3 border ${level.border} bg-gradient-to-br ${level.gradient}`}>
            <div className="flex items-center justify-between mb-2">
               <span className="text-[10px] font-semibold text-slate-500">当前等级</span>
@@ -166,7 +166,7 @@ export default function Sidebar() {
               </div>
            </div>
         </div>
-      </div>
+      </div> */}
     </aside>
   );
 }
