@@ -63,14 +63,14 @@ export default function Dashboard() {
           type: 'line',
           smooth: true,
           data: counts,
-          itemStyle: { color: '#6366f1' },
+          itemStyle: { color: '#000000' },
           areaStyle: {
             color: {
               type: 'linear',
               x: 0, y: 0, x2: 0, y2: 1,
               colorStops: [
-                { offset: 0, color: 'rgba(99, 102, 241, 0.3)' },
-                { offset: 1, color: 'rgba(99, 102, 241, 0)' }
+                { offset: 0, color: 'rgba(0, 0, 0, 0.2)' },
+                { offset: 1, color: 'rgba(0, 0, 0, 0)' }
               ]
             }
           }
@@ -115,14 +115,14 @@ export default function Dashboard() {
           stack: 'total',
           barWidth: '40%',
           data: recharge,
-          itemStyle: { color: '#10b981' }
+          itemStyle: { color: '#000000' }
         },
         {
           name: '消费金额',
           type: 'bar',
           stack: 'total',
           data: consumption.map((v: number) => -v), // Display as negative
-          itemStyle: { color: '#f43f5e' }
+          itemStyle: { color: '#a3a3a3' }
         }
       ]
     };
@@ -139,15 +139,15 @@ export default function Dashboard() {
     };
 
     const colorMap: Record<string, string> = {
-        'male': '#3b82f6',
-        'female': '#ec4899',
-        'unknown': '#94a3b8'
+        'male': '#000000',
+        'female': '#737373',
+        'unknown': '#d4d4d4'
     };
 
     const seriesData = data.charts.memberGender.map((item: any) => ({
         value: item.count,
         name: labelMap[item.gender] || item.gender,
-        itemStyle: { color: colorMap[item.gender] || '#cbd5e1' }
+        itemStyle: { color: colorMap[item.gender] || '#e5e5e5' }
     }));
 
     return {
@@ -200,6 +200,7 @@ export default function Dashboard() {
     }));
 
     return {
+      color: ['#000000', '#404040', '#737373', '#a3a3a3', '#d4d4d4'],
       tooltip: {
         trigger: 'item'
       },

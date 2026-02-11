@@ -40,7 +40,7 @@ export default function Sidebar() {
       label: '普通会员', 
       icon: Shield, 
       desc: '基础功能',
-      color: 'text-slate-600', 
+      color: 'text-slate-500', 
       bg: 'bg-slate-100',
       border: 'border-slate-200',
       gradient: 'from-slate-50 to-slate-100'
@@ -49,19 +49,19 @@ export default function Sidebar() {
       label: 'Pro 会员', 
       icon: Zap, 
       desc: '专业功能',
-      color: 'text-indigo-600', 
-      bg: 'bg-indigo-50',
-      border: 'border-indigo-100',
-      gradient: 'from-indigo-50 to-white'
+      color: 'text-slate-700', 
+      bg: 'bg-slate-200',
+      border: 'border-slate-300',
+      gradient: 'from-slate-100 to-white'
     },
     max: { 
       label: 'Max 会员', 
       icon: Crown, 
       desc: '尊享权益',
-      color: 'text-amber-600', 
-      bg: 'bg-amber-50',
-      border: 'border-amber-100',
-      gradient: 'from-amber-50 to-white'
+      color: 'text-black', 
+      bg: 'bg-slate-300',
+      border: 'border-slate-400',
+      gradient: 'from-slate-200 to-white'
     }
   };
   
@@ -71,7 +71,7 @@ export default function Sidebar() {
     <aside className="w-52 flex-shrink-0 border-r border-slate-200 flex flex-col bg-white h-screen sticky top-0 z-20">
       <div className="p-5">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 bg-indigo-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-indigo-200">
+          <div className="w-7 h-7 bg-black rounded-lg flex items-center justify-center text-white shadow-lg shadow-slate-200">
             <level.icon className="w-4 h-4" />
           </div>
           <span className="text-base font-bold tracking-tight">VIP 管理系统</span>
@@ -87,8 +87,8 @@ export default function Sidebar() {
              href={item.path}
              className={`w-full sidebar-item flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 ${
                isActive(item.path)
-                 ? 'bg-white text-indigo-600 shadow-[0_4px_12px_rgba(99,102,241,0.1)]' 
-                 : 'text-slate-600 hover:bg-white hover:text-indigo-600'
+                 ? 'bg-slate-800 text-white shadow-md' 
+                 : 'text-slate-500 hover:bg-slate-100 hover:text-black'
              }`}
            >
              <item.icon className="w-4 h-4" />
@@ -104,8 +104,8 @@ export default function Sidebar() {
              href={item.path}
              className={`w-full sidebar-item flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 ${
                isActive(item.path)
-                 ? 'bg-white text-indigo-600 shadow-[0_4px_12px_rgba(99,102,241,0.1)]' 
-                 : 'text-slate-600 hover:bg-white hover:text-indigo-600'
+                 ? 'bg-slate-800 text-white shadow-md' 
+                 : 'text-slate-500 hover:bg-slate-100 hover:text-black'
              }`}
            >
              <item.icon className="w-4 h-4" />
@@ -121,8 +121,8 @@ export default function Sidebar() {
              href={item.path}
              className={`w-full sidebar-item flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 ${
                isActive(item.path)
-                 ? 'bg-white text-indigo-600 shadow-[0_4px_12px_rgba(99,102,241,0.1)]' 
-                 : 'text-slate-600 hover:bg-white hover:text-indigo-600'
+                 ? 'bg-slate-800 text-white shadow-md' 
+                 : 'text-slate-500 hover:bg-slate-100 hover:text-black'
              }`}
            >
              <item.icon className="w-4 h-4" />
@@ -138,8 +138,8 @@ export default function Sidebar() {
              href={item.path}
              className={`w-full sidebar-item flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 ${
                isActive(item.path)
-                 ? 'bg-white text-indigo-600 shadow-[0_4px_12px_rgba(99,102,241,0.1)]' 
-                 : 'text-slate-600 hover:bg-white hover:text-indigo-600'
+                 ? 'bg-slate-800 text-white shadow-md' 
+                 : 'text-slate-500 hover:bg-slate-100 hover:text-black'
              }`}
            >
              <item.icon className="w-4 h-4" />
