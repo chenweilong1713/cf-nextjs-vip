@@ -29,7 +29,7 @@ export default function Header() {
         {/* <div className="relative">
             <button 
                 onClick={() => setShowNotifications(!showNotifications)}
-                className={`relative p-1.5 transition-colors rounded-full cursor-pointer ${showNotifications ? 'text-indigo-600 bg-indigo-50' : 'text-slate-400 hover:text-indigo-600'}`}
+                className={`relative p-1.5 transition-colors rounded-full cursor-pointer ${showNotifications ? 'text-black bg-slate-100' : 'text-slate-400 hover:text-black'}`}
             >
                 <Bell className="w-4 h-4" />
                 <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-red-500 rounded-full border-2 border-white"></span>
@@ -43,7 +43,7 @@ export default function Header() {
         <div className="relative">
           <button 
             onClick={() => setShowUserMenu(!showUserMenu)}
-            className={`w-7 h-7 rounded-full bg-indigo-100 border border-indigo-200 flex items-center justify-center overflow-hidden cursor-pointer hover:ring-2 hover:ring-indigo-500/20 transition-all ${showUserMenu ? 'ring-2 ring-indigo-500/20' : ''}`}
+            className={`w-7 h-7 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center overflow-hidden cursor-pointer hover:ring-2 hover:ring-black/20 transition-all ${showUserMenu ? 'ring-2 ring-black/20' : ''}`}
           >
                <img src="https://api.dicebear.com/9.x/avataaars/svg?seed=Felix" alt="User" className="w-full h-full object-cover" />
           </button>

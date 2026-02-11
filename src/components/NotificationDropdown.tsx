@@ -73,7 +73,7 @@ export default function NotificationDropdown({ onClose }: NotificationDropdownPr
                     {unreadCount > 0 && (
                         <button 
                             onClick={handleMarkAllRead}
-                            className="text-xs text-indigo-600 hover:bg-indigo-50 px-2 py-1 rounded transition-colors flex items-center gap-1"
+                            className="text-xs text-black hover:bg-slate-100 px-2 py-1 rounded transition-colors flex items-center gap-1"
                             title="全部已读"
                         >
                             <Check className="w-3 h-3" />
@@ -97,11 +97,11 @@ export default function NotificationDropdown({ onClose }: NotificationDropdownPr
                         {notifications.map(notification => (
                             <div 
                                 key={notification.id} 
-                                className={`p-4 hover:bg-slate-50 transition-colors cursor-pointer relative group ${!notification.read ? 'bg-indigo-50/30' : ''}`}
+                                className={`p-4 hover:bg-slate-50 transition-colors cursor-pointer relative group ${!notification.read ? 'bg-slate-100/50' : ''}`}
                                 onClick={() => handleMarkRead(notification.id)}
                             >
                                 <div className="flex gap-3">
-                                    <div className={`mt-1 w-2 h-2 rounded-full flex-shrink-0 ${!notification.read ? 'bg-indigo-500' : 'bg-slate-200'}`}></div>
+                                    <div className={`mt-1 w-2 h-2 rounded-full flex-shrink-0 ${!notification.read ? 'bg-black' : 'bg-slate-200'}`}></div>
                                     <div className="flex-1">
                                         <h4 className={`text-sm font-medium mb-1 ${!notification.read ? 'text-slate-800' : 'text-slate-600'}`}>
                                             {notification.title}
@@ -122,7 +122,7 @@ export default function NotificationDropdown({ onClose }: NotificationDropdownPr
             </div>
             
             <div className="p-3 border-t border-slate-50 bg-slate-50/30 text-center">
-                <button className="text-xs text-slate-500 hover:text-indigo-600 transition-colors">
+                <button className="text-xs text-slate-500 hover:text-black transition-colors">
                     查看全部消息
                 </button>
             </div>

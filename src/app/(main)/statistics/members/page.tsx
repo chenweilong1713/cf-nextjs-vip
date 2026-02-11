@@ -112,14 +112,14 @@ export default function MemberStatisticsPage() {
           type: 'line',
           smooth: true,
           data: counts,
-          itemStyle: { color: '#6366f1' },
+          itemStyle: { color: '#000000' },
           areaStyle: {
             color: {
               type: 'linear',
               x: 0, y: 0, x2: 0, y2: 1,
               colorStops: [
-                { offset: 0, color: 'rgba(99, 102, 241, 0.3)' },
-                { offset: 1, color: 'rgba(99, 102, 241, 0)' }
+                { offset: 0, color: 'rgba(0, 0, 0, 0.3)' },
+                { offset: 1, color: 'rgba(0, 0, 0, 0)' }
               ]
             }
           }
@@ -149,7 +149,7 @@ export default function MemberStatisticsPage() {
               name="startDate"
               value={filters.startDate}
               onChange={handleFilterChange}
-              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black/20 focus:border-black"
             />
           </div>
           
@@ -162,14 +162,14 @@ export default function MemberStatisticsPage() {
               name="endDate"
               value={filters.endDate}
               onChange={handleFilterChange}
-              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black/20 focus:border-black"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors shadow-sm flex items-center gap-2 disabled:opacity-70"
+            className="px-4 py-2 bg-black text-white rounded-lg text-sm font-medium hover:bg-slate-800 transition-colors shadow-sm flex items-center gap-2 disabled:opacity-70"
           >
             {loading ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : '查询'}
           </button>
@@ -189,11 +189,11 @@ export default function MemberStatisticsPage() {
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden group">
-          <div className="absolute right-0 top-0 w-24 h-24 bg-indigo-50 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
+          <div className="absolute right-0 top-0 w-24 h-24 bg-slate-50 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
           <div className="relative">
-            <div className="flex items-center gap-2 text-indigo-600 mb-2">
-              <div className="p-2 bg-indigo-100 rounded-lg">
-                <TrendingUp className="w-5 h-5" />
+            <div className="flex items-center gap-2 text-slate-800 mb-2">
+              <div className="p-2 bg-slate-200 rounded-lg">
+                <TrendingUp className="w-5 h-5 text-slate-800" />
               </div>
               <span className="font-medium">期间新增会员</span>
             </div>
@@ -207,11 +207,11 @@ export default function MemberStatisticsPage() {
         </div>
 
         <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden group">
-          <div className="absolute right-0 top-0 w-24 h-24 bg-blue-50 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
+          <div className="absolute right-0 top-0 w-24 h-24 bg-slate-50 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
           <div className="relative">
-            <div className="flex items-center gap-2 text-blue-600 mb-2">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <Users className="w-5 h-5" />
+            <div className="flex items-center gap-2 text-slate-800 mb-2">
+              <div className="p-2 bg-slate-200 rounded-lg">
+                <Users className="w-5 h-5 text-slate-800" />
               </div>
               <span className="font-medium">当前会员总数</span>
             </div>

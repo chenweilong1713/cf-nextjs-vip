@@ -172,7 +172,7 @@ export default function TransactionStatisticsPage() {
         name: '充值金额',
         type: 'bar',
         barMaxWidth: 30,
-        itemStyle: { color: '#10b981', borderRadius: [4, 4, 0, 0] },
+        itemStyle: { color: '#000000', borderRadius: [4, 4, 0, 0] },
         data: rechargeData
       });
     }
@@ -182,7 +182,7 @@ export default function TransactionStatisticsPage() {
         name: '消费金额',
         type: 'bar',
         barMaxWidth: 30,
-        itemStyle: { color: '#f43f5e', borderRadius: [4, 4, 0, 0] },
+        itemStyle: { color: '#737373', borderRadius: [4, 4, 0, 0] },
         data: consumeData
       });
     }
@@ -239,7 +239,7 @@ export default function TransactionStatisticsPage() {
               name="startDate"
               value={filters.startDate}
               onChange={handleFilterChange}
-              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black/20 focus:border-black"
             />
           </div>
           
@@ -252,7 +252,7 @@ export default function TransactionStatisticsPage() {
               name="endDate"
               value={filters.endDate}
               onChange={handleFilterChange}
-              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black/20 focus:border-black"
             />
           </div>
 
@@ -264,7 +264,7 @@ export default function TransactionStatisticsPage() {
               name="type"
               value={filters.type}
               onChange={handleFilterChange}
-              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 min-w-[120px]"
+              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black/20 focus:border-black min-w-[120px]"
             >
               <option value="all">全部</option>
               <option value="recharge">仅充值</option>
@@ -284,7 +284,7 @@ export default function TransactionStatisticsPage() {
               onChange={handleFilterChange}
               onFocus={() => { if(filters.member) setShowSuggestions(true); }}
               autoComplete="off"
-              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 w-[160px]"
+              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black/20 focus:border-black w-[160px]"
             />
             {showSuggestions && (
                 <div className="absolute top-full left-0 w-[240px] bg-white border border-slate-200 rounded-lg shadow-xl mt-1 z-50 max-h-[300px] overflow-y-auto">
@@ -313,7 +313,7 @@ export default function TransactionStatisticsPage() {
           <button
             type="submit"
             disabled={loading}
-            className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors shadow-sm flex items-center gap-2 disabled:opacity-70"
+            className="px-4 py-2 bg-black text-white rounded-lg text-sm font-medium hover:bg-slate-800 transition-colors shadow-sm flex items-center gap-2 disabled:opacity-70"
           >
             {loading ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Search className="w-4 h-4" />}
             查询
@@ -334,11 +334,11 @@ export default function TransactionStatisticsPage() {
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden group">
-          <div className="absolute right-0 top-0 w-24 h-24 bg-emerald-50 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
+          <div className="absolute right-0 top-0 w-24 h-24 bg-slate-50 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
           <div className="relative">
-            <div className="flex items-center gap-2 text-emerald-600 mb-2">
-              <div className="p-2 bg-emerald-100 rounded-lg">
-                <TrendingUp className="w-5 h-5" />
+            <div className="flex items-center gap-2 text-slate-800 mb-2">
+              <div className="p-2 bg-slate-200 rounded-lg">
+                <TrendingUp className="w-5 h-5 text-slate-800" />
               </div>
               <span className="font-medium">期间总充值</span>
             </div>
@@ -352,11 +352,11 @@ export default function TransactionStatisticsPage() {
         </div>
 
         <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden group">
-          <div className="absolute right-0 top-0 w-24 h-24 bg-rose-50 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
+          <div className="absolute right-0 top-0 w-24 h-24 bg-slate-50 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
           <div className="relative">
-            <div className="flex items-center gap-2 text-rose-600 mb-2">
-              <div className="p-2 bg-rose-100 rounded-lg">
-                <TrendingDown className="w-5 h-5" />
+            <div className="flex items-center gap-2 text-slate-800 mb-2">
+              <div className="p-2 bg-slate-200 rounded-lg">
+                <TrendingDown className="w-5 h-5 text-slate-800" />
               </div>
               <span className="font-medium">期间总消费</span>
             </div>
@@ -370,15 +370,15 @@ export default function TransactionStatisticsPage() {
         </div>
 
         <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden group">
-          <div className="absolute right-0 top-0 w-24 h-24 bg-indigo-50 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
+          <div className="absolute right-0 top-0 w-24 h-24 bg-slate-50 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110" />
           <div className="relative">
-            <div className="flex items-center gap-2 text-indigo-600 mb-2">
-              <div className="p-2 bg-indigo-100 rounded-lg">
-                <Activity className="w-5 h-5" />
+            <div className="flex items-center gap-2 text-slate-800 mb-2">
+              <div className="p-2 bg-slate-200 rounded-lg">
+                <Activity className="w-5 h-5 text-slate-800" />
               </div>
               <span className="font-medium">净收支</span>
             </div>
-            <div className={`text-3xl font-bold ${data?.summary?.netIncome >= 0 ? 'text-slate-800' : 'text-rose-600'}`}>
+            <div className={`text-3xl font-bold ${data?.summary?.netIncome >= 0 ? 'text-slate-800' : 'text-slate-600'}`}>
               {loading ? '-' : `¥${data?.summary?.netIncome?.toLocaleString() || 0}`}
             </div>
              <div className="text-xs text-slate-400 mt-1">
@@ -391,13 +391,13 @@ export default function TransactionStatisticsPage() {
       {/* Chart Section */}
       <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
         <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
-            <div className="w-1 h-6 bg-indigo-600 rounded-full" />
+            <div className="w-1 h-6 bg-black rounded-full" />
             趋势分析
         </h3>
         <div className="w-full h-[400px]">
           {loading ? (
             <div className="w-full h-full flex items-center justify-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
             </div>
           ) : (
             <ReactECharts option={chartOption} style={{ height: '100%', width: '100%' }} />

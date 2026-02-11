@@ -27,10 +27,10 @@ export default function UserDropdown({ onClose }: UserDropdownProps) {
         <div className="p-1">
           <Link 
             href="/profile" 
-            className="flex items-center gap-3 px-4 py-3 text-sm text-slate-700 hover:bg-slate-50 hover:text-indigo-600 rounded-lg transition-colors group"
+            className="flex items-center gap-3 px-4 py-3 text-sm text-slate-700 hover:bg-slate-50 hover:text-black rounded-lg transition-colors group"
             onClick={onClose}
           >
-            <div className="p-1.5 bg-slate-100 rounded-lg text-slate-500 group-hover:bg-indigo-50 group-hover:text-indigo-600 transition-colors">
+            <div className="p-1.5 bg-slate-100 rounded-lg text-slate-500 group-hover:bg-slate-200 group-hover:text-black transition-colors">
               <User className="w-4 h-4" />
             </div>
             <span className="font-medium">我的信息</span>

@@ -262,8 +262,8 @@ export default function Dashboard() {
           trend="动态" 
           trendUp={true} 
           icon={Users} 
-          iconBg="bg-indigo-500/10"
-          iconColor="text-indigo-600"
+          iconBg="bg-slate-200"
+          iconColor="text-slate-800"
         />
         <StatsCard 
           title="今日消费额" 
@@ -271,8 +271,8 @@ export default function Dashboard() {
           trend="实时" 
           trendUp={true} 
           icon={CreditCard} 
-          iconBg="bg-emerald-500/10"
-          iconColor="text-emerald-600"
+          iconBg="bg-slate-200"
+          iconColor="text-slate-800"
         />
         <StatsCard 
           title="积分池总览" 
@@ -280,8 +280,8 @@ export default function Dashboard() {
           trend="累计" 
           trendUp={true} 
           icon={Coins} 
-          iconBg="bg-amber-500/10"
-          iconColor="text-amber-600"
+          iconBg="bg-slate-200"
+          iconColor="text-slate-800"
         />
         <StatsCard 
           title="活跃度指数" 
@@ -289,8 +289,8 @@ export default function Dashboard() {
           trend="7日活跃占比" 
           trendUp={Number(data.summary.activeRate) > 50} 
           icon={Activity} 
-          iconBg="bg-rose-500/10"
-          iconColor="text-rose-600"
+          iconBg="bg-slate-200"
+          iconColor="text-slate-800"
         />
       </div>
 
@@ -351,7 +351,7 @@ function StatsCard({ title, value, trend, trendUp, icon: Icon, iconBg, iconColor
         </div>
       </div>
       <div className="mt-4 flex items-center gap-2">
-        <span className={`text-xs font-medium flex items-center gap-1 ${trendUp ? 'text-emerald-600' : 'text-rose-600'}`}>
+        <span className={`text-xs font-medium flex items-center gap-1 ${trendUp ? 'text-black' : 'text-slate-600'}`}>
           {trendUp ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
           {trend}
         </span>
